@@ -1,0 +1,36 @@
+things to do for audio:
+
+types of music needed:
+
+combat music (during a match):
+look into the It Wasn't Tim sequence on the PoIZone synth
+
+results music (post-match stats):
+
+menu music (plays on the menu) [DONE]
+sorta dark-ish spooky stuff? look into the Sakura synth
+
+SFX needed:
+
+railgun [DONE]
+ambience [DONE]
+LMG:
+sample desk slam again? 
+this time bass boost it too much so it becomes just some loud sound, and time-stretch it to like 0.1 seconds
+pistol:
+record pen hitting a desk
+distort as necessary
+death:
+look for one with creative commons? check with david if that's allowed
+update: creative commons is a go
+knife:
+air swoosh sound effect, creative commons i choose you
+rocket launcher:
+CC = creative commons
+shotgun:
+CC
+SMG:
+CC
+ammo pickup:
+CC
+

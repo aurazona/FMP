@@ -1,0 +1,120 @@
+game mechanics:
+
+grappling hook
+3 limited uses, one charge refreshed every 3 seconds
+works by establishing a spring joint between player and hook's point of impact
+player exits joint via jumping in the air
+player can swing left and right using A and D
+grappling hook has a long range, though if it flies in the air for more than 2 seconds it despawns
+How to make:
+Instantiate the hook at a certain trajectory based on player’s aim, flying straight. Hook moves at a quick speed. When hook detects a collision, get the position of the hook at create a spring joint between the player and the hook’s point of impact. If the player is in the air and the joint exists, apply a constant force depending on the player’s movement direction. Whilst the joint exists and the player is airborne, check to see if the player has pressed jump. When they have, destroy the spring joint.
+
+rocket jumping
+deals 10 damage to player who shot the rocket
+rocket impact emits a repelling force to player and enemy characters, allowing player to traverse the environment via rocket jumping
+example: https://www.kongregate.com/games/bitwrit/rocketjump
+How to make:
+Look into a constant repelling force, perhaps radial? When the rocket is fired, assign it the ID of the player who shot it. If the rocket successfully explodes without being shot down, check every player who is in the blast radius. If the rocket’s ID matches the player’s ID, deal only 10 damage.
+
+bunnyhopping
+jumping as soon as you hit the ground does not slow you down, and when combined with the small speed boost you get from jumping forward, can result in an increase in speed. speed caps out at about 1/2 of a rocket jump, which makes bunnyhopping about 1.5x faster than normal movement.
+How to make:
+When collision is detected with the ground, reduce friction to 0 for 0.25 seconds.
+
+health and armor
+Every combatant has 100 health and can have up to 150 armor. if a player with armor is damaged, the armor takes 90% of the damage, and the other 10% gets taken off of the player's health. Armor is acquired from around the map, where there will be designated spawnpoints for armor. Fall damage does not exist in this game. Players can heal by picking up a medkit which spawns similarly to armor.
+How to make:
+Damage:
+If player collides with bullet, perform an armour check first. If armour is present, take the damage number and multiply it by 0.9, and apply that to the armour. Reference the damage number again and multiply it by 0.1 and apply that to health. Otherwise, apply the full damage to health. If health reaches 0, kill the player and begin the respawn timer of 5 seconds. When the player respawns, they will have 3 seconds of spawn protection, where they will take no damage. When their 3 seconds are up, they will then be able to take damage normally.
+Projectiles (bullets):
+When a bullet is created, assign it the following parameters using a static method which grabs:
+Shooter ID
+Shooter team
+Weapon of origin
+When the projectile collides with a player, check their team. If the team of the shooter and the collided player match, travel through the collided player and continue moving. If the projectile collides with a player who is not on the shooter’s team, apply damage using the BulletDamage() algorithm. During this, an exchange will take place between the BulletDamage() algorithm and the PlayerHealth() algorithm. BulletDamage() will reference the weapon of origin, and supply PlayerHealth() with the intended damage numbers as well as the shooter ID. PlayerHealth() will then calculate the damage taken using the method noted in the damage tutorial above, and will then apply the damage to the other player. Optionally, PlayerHealth() will send the damage amount to the player who fired the projectile, using the shooter ID. This could be used for basic hitmarkers, or even a full damage display to notify the shooter on how much damage they dealt.
+Weapons
+As the game is 2D, the biggest concern is weapon range. If every weapon has unlimited range, most players will end up endlessly firing into a corridor, and this often results in a stalemate. By introducing a limited range on the weapons, the players will be forced to move closer to the enemy in order to deal damage.
+Additional weapon notes
+ROF is measured in RPM
+Range measured in how many seconds until the projectile despawns.
+Accuracy measured in spread cone, where there will be a certain degree of accuracy which bullets can fire in, i.e 45 degrees for the LMG, whilst the railgun is perfectly accurate with a spread cone of 0 degrees. Rule of thumb is the lower the number, the more accurate the weapon is.
+Reloading is measured in seconds, and is measured from empty-to-full clip for some weapons that load one round at a time, e.g rocket launcher.
+
+
+
+
+railgun (RG) slow fire delay, high damage and unlimited range. player cannot switch weapons for a few seconds after firing the railgun, making it a high-risk, high-reward weapon. Pushes the player back a bit when fires.
+Stats:
+DMG: 80 HEAD: 135
+ROF: 12
+RNG: ∞
+MAX AMMO: 5
+CLIP: 1
+ACC: 0
+REL: 3
+rocket launcher (RL) medium fire delay, high damage but destroyable projectile. can be used to rocket jump. rockets have a low health pool and will explode mid-air if enough damage is dealt to them, making the player take damage as if they were hit by a rocket if in the blast radius.
+Stats:
+DMG: 85
+ROF: 120
+RNG: 5 second flight limit
+AMMO: 20
+CLIP: 5
+ACC: 0
+REL: 4
+light machine gun (LMG) rapid-fire, medium damage, short range and low accuracy. useful for close-quarters battles, ineffective at medium-long range.
+Stats:
+DMG: 5 HEAD: 10
+ROF: 900
+RNG: 0.5 seconds
+AMMO: 400
+CLIP: 100
+ACC: 45
+REL: 5
+pistol (P) semi-auto, low damage, medium range. all players spawn with a pistol. unlimited reserve ammo, reloading still required.
+Stats: 
+DMG:10
+ROF: Max of 600
+RNG: 0.5 seconds
+AMMO: ∞
+CLIP: 10
+ACC: 25
+REL: 1
+sawn-off shotgun (SG) semi-auto, extremely high damage, very low range & accuracy, long reload. can OHKO an enemy at point-blank range, bullets dissipate after 0.25 seconds.
+Stats:
+DMG: 10 per pellet, 20 pellets per shot.
+ROF: ∞
+RNG: 0.25 seconds
+AMMO: 10
+CLIP: 2
+ACC: 90
+REL: 3
+submachine gun (SMG) full-auto, low damage, medium range. superior version of a pistol, featuring higher damage (though still low), full-auto firing, and a longer clip. mainly useful for a run-and-gun strategy.
+Stats:
+DMG: 7.5
+ROF: 750
+RNG: 0.5 seconds
+AMMO: 300
+CLIP: 50
+ACC: 30
+REL: 2
+Knife (K) cannot be equipped as a standalone weapon, uses a hotkey to swing. Kills an unarmored target in 2 swings and has a swing rate of 1.5 swings per second.
+DMG: 80
+ROF: 90
+RNG: Knife sprite
+AMMO: ∞
+CLIP: ∞
+ACC: 0
+REL: 0
+
+
+Ammo acquisition:
+When you kill an enemy, you gain a set amount of ammo for any weapon you hold at random minus the one you are currently using. This encourages players to frequently use different weapons, and will hopefully discourage camping via the fact the player will run out of ammo.
+
+
+Possible way to do shooting:
+Have the teams on different Z positions (how close they are to the main camera)
+And have their bullets on the same Z position as the enemy team
+Therefore, the bullets will only collide with the enemies
+Though rockets would need an overhaul
+
+Perhaps look into Physics2D.IgnoreCollision? Link: https://docs.unity3d.com/ScriptReference/Physics2D.IgnoreCollision.html

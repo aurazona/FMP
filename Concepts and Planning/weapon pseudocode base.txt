@@ -1,0 +1,20 @@
+Something along the lines of
+
+If mouse clicked & firedelay[weapon] == 0 & bulletmag !=0
+
+Cast ray/fire bullet
+bulletmag--
+firedelay++
+
+If firedelay !=0
+
+If firedelay !=120
+Firedelay++
+If firedelay == 120
+Firedelay = 0
+If R is pressed and bulletmag != maxmag
+	Play reload animation
+	Bulletmag == maxmag
+
+If switchingweapon = true
+	Firedelay = 0 (UNLESS IT’S RAILGUN, IN WHICH CASE WEAPON SWITCHING IS DISABLED UNTIL IT IS READY TO FIRE AGAIN.)
